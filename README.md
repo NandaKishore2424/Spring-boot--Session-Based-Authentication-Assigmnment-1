@@ -1,8 +1,8 @@
-# Fitness Tracking App - System Design Assignment
+# Fitness Tracking App - Session-Based Authentication Assignment
 
 ## Project Overview
 
-A Spring Boot REST API for a fitness tracking application that handles user registration, authentication, and secure dashboard access.
+A Spring Boot web application for fitness tracking that uses session-based authentication (JSESSIONID cookie) to secure user dashboards, profiles, and workout plans.
 
 ## Components and Layers
 
@@ -10,10 +10,12 @@ A Spring Boot REST API for a fitness tracking application that handles user regi
 
 - **AuthController**: Handles registration and login endpoints
 - **UserController**: Manages user profile and dashboard access
+- **HTML Pages**: login.html, register.html, dashboard.html, profile.html, workout-plans.html, logs.html, etc.
 
 ### 2. Service Layer
 
 - **UserService**: Business logic for user operations
+- **UserDetailsServiceImpl**: Loads user details for authentication
 
 ### 3. Data Access Layer
 
@@ -22,50 +24,58 @@ A Spring Boot REST API for a fitness tracking application that handles user regi
 
 ### 4. Security Layer
 
-- **JWT Token Provider**: Generates and validates JWT tokens
-- **JWT Authentication Filter**: Intercepts requests and validates tokens
-- **Security Configuration**: Configures Spring Security
+- **SecurityConfig**: Configures Spring Security for session-based authentication
+- **Session Management**: JSESSIONID cookie-based session tracking
+- **Form Login**: Username/password authentication with redirect
 
 ### 5. DTOs (Data Transfer Objects)
 
 - **UserRegistrationDTO**: Registration request data
 - **LoginDTO**: Login credentials
-- **AuthResponseDTO**: Authentication response with token
 - **UserProfileDTO**: User profile information
+- **WeeklyReportDTO**: Fitness report data
 
-## REST API Structure
+## Application Flow & Endpoints
 
-### Authentication Endpoints (Public)
-
-```
-POST /api/auth/register - User registration
-POST /api/auth/login - User login
-```
-
-### Protected Endpoints (Requires JWT Token)
+### Public Endpoints (No Login Required)
 
 ```
-GET /api/user/profile - Get user profile
-GET /api/user/dashboard - Access user dashboard
+GET /login.html           - Login page
+GET /register.html        - Registration page
+POST /login               - Login form submission
+POST /api/auth/register   - User registration
+GET /index.html           - Home/redirect page
+```
+
+### Protected Endpoints (Require Login/Session)
+
+```
+GET /dashboard.html       - User dashboard
+GET /profile.html         - User profile
+GET /workout-plans.html   - Workout plans
+GET /logs.html            - Workout logs
+GET /logout.html          - Logout page (triggers logout)
 ```
 
 ## Security Implementation
 
-### JWT Token-based Authentication
+### Session-Based Authentication
 
-- Tokens generated upon successful login/registration
-- All protected endpoints require valid JWT token in Authorization header
-- Format: `Authorization: Bearer <token>`
+- Spring Security manages sessions using JSESSIONID cookie
+- Form-based login with username/password fields
+- Session invalidation on logout
+- Protected resources require a valid session (redirects to login if not authenticated)
 
 ### Password Security
 
 - BCrypt password encoding
-- Minimum 6 characters requirement
+- Password stored securely in database
+- Custom UserDetailsService for authentication
 
-### Email Uniqueness
+### Authorization
 
-- Database constraint ensures unique email addresses
-- Validation occurs during registration
+- All dashboard and user data endpoints require authentication
+- Redirects to login page when accessing protected resources without a session
 
 ## How to Run
 
@@ -81,7 +91,13 @@ GET /api/user/dashboard - Access user dashboard
 ./gradlew bootRun
 ```
 
-3. Access H2 Database Console (for testing):
+3. Access the application:
+
+```
+URL: http://localhost:8080
+```
+
+4. Access H2 Database Console (for testing):
 
 ```
 URL: http://localhost:8080/h2-console
@@ -90,43 +106,35 @@ Username: sa
 Password: (empty)
 ```
 
-## API Usage Examples
+## Usage Examples
 
-### Register User
+### Register a New User
 
-```bash
-POST http://localhost:8080/api/auth/register
-Content-Type: application/json
-
-{
-    "firstName": "John",
-    "lastName": "Doe",
-    "email": "john.doe@example.com",
-    "password": "password123",
-    "phone": "1234567890",
-    "age": 25,
-    "height": 175.5,
-    "weight": 70.0,
-    "gender": "MALE",
-    "fitnessGoal": "MUSCLE_BUILDING"
-}
-```
+1. Go to http://localhost:8080/register.html
+2. Fill in the registration form and submit
+3. You will be redirected to the login page
 
 ### Login
 
-```bash
-POST http://localhost:8080/api/auth/login
-Content-Type: application/json
+1. Go to http://localhost:8080/login.html
+2. Enter your email and password
+3. Upon successful login, you will be redirected to the dashboard
 
-{
-    "email": "john.doe@example.com",
-    "password": "password123"
-}
-```
+### Access Protected Resources
 
-### Access Dashboard (with token)
+1. After login, you can access:
+   - Dashboard: http://localhost:8080/dashboard.html
+   - Profile: http://localhost:8080/profile.html
+   - Workout Plans: http://localhost:8080/workout-plans.html
+   - Logs: http://localhost:8080/logs.html
 
-```bash
-GET http://localhost:8080/api/user/dashboard
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9...
-```
+### Logout
+
+1. Click "Logout" in the navigation menu
+2. You will be redirected to the login page and your session will be invalidated
+
+## Key Security Files
+
+- **SecurityConfig.java**: Main security configuration (session-based)
+- **UserDetailsServiceImpl.java**: User authentication implementation
+- **login.html/register.html**: Authentication forms
