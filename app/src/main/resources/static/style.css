@@ -1,0 +1,11 @@
+body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 0; }
+h2 { color: #2c3e50; }
+form { background: #fff; padding: 20px; margin: 30px auto; border-radius: 8px; max-width: 400px; box-shadow: 0 2px 8px #ccc; }
+label { display: block; margin-bottom: 10px; }
+input[type="text"], input[type="email"], input[type="password"] { width: 100%; padding: 8px; margin-top: 4px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 4px; }
+button { background: #27ae60; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+button:hover { background: #219150; }
+nav { margin: 20px 0; }
+nav a { margin-right: 10px; color: #2980b9; text-decoration: none; }
+nav a:hover { text-decoration: underline; }
+div#dashboard-content, div#profile-content, div#logs-content, div#workout-plans-content { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px #ccc; margin: 20px auto; max-width: 600px; }

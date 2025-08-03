@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - Fitness Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Register</h2>
+    <form action="/api/auth/register" method="post">
+        <label>Email: <input type="email" name="email" required></label><br>
+        <label>Password: <input type="password" name="password" required></label><br>
+        <label>First Name: <input type="text" name="firstName" required></label><br>
+        <label>Last Name: <input type="text" name="lastName" required></label><br>
+        <label>Age: <input type="number" name="age" required></label><br>
+        <label>Gender: 
+            <select name="gender" required>
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+                <option value="OTHER">Other</option>
+            </select>
+        </label><br>
+        <label>Fitness Goal: 
+            <select name="fitnessGoal" required>
+                <option value="WEIGHT_LOSS">Weight Loss</option>
+                <option value="WEIGHT_GAIN">Weight Gain</option>
+                <option value="MUSCLE_BUILDING">Muscle Building</option>
+                <option value="CARDIO_FITNESS">Cardio Fitness</option>
+                <option value="GENERAL_FITNESS">General Fitness</option>
+            </select>
+        </label><br>
+        <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="login.html">Login</a></p>
+</body>
+</html>

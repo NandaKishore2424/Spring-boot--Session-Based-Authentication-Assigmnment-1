@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Profile - Fitness Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Update Profile</h2>
+    <form action="/api/user/update" method="post">
+        <label>First Name: <input type="text" name="firstName" required></label><br>
+        <label>Last Name: <input type="text" name="lastName" required></label><br>
+        <label>Password: <input type="password" name="password"></label><br>
+        <button type="submit">Update</button>
+    </form>
+    <a href="profile.html">Back to Profile</a>
+</body>
+</html>
